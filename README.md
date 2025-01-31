@@ -1,10 +1,10 @@
 # Simple Extractive Text Summarization
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![Text Summarization](https://img.shields.io/badge/Text_Summarization-0080FF?style=for-the-badge)
-![TF-IDF](https://img.shields.io/badge/TF--IDF-FF5F1F?style=for-the-badge)
-![Cosine Similarity](https://img.shields.io/badge/Cosine_Similarity-FF3B00?style=for-the-badge)
+[![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)](https://github.com/topics/python)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://github.com/topics/javascript)
+[![Text Summarization](https://img.shields.io/badge/Text_Summarization-0080FF?style=flat)](https://github.com/topics/text-summarization)
+[![TF-IDF](https://img.shields.io/badge/TF--IDF-FF5F1F?style=flat)](https://github.com/topics/tf-idf)
+[![Cosine Similarity](https://img.shields.io/badge/Cosine_Similarity-FF3B00?style=flat)](https://github.com/topics/cosine-similarity)
 
 
 This is a simple project that implements extractive text summarization. Extractive text summarization is a technique that generates a summary by selecting important sentences from the input text, rather than generating new sentences. The model ranks sentences based on their importance using an algorithm, and combines the most relevant ones to form a summary. This approach does not involve deep learning or training, as seen in common machine learning models. Instead, it focuses on summarizing based on the given input text.
