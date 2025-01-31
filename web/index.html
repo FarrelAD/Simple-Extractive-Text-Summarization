@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extractive Text Summarization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <form id="text-form" class="bg-white p-6 rounded-lg shadow-lg w-1/2">
+        <h2 class="text-2xl font-bold mb-4 text-center">Extractive Text Summarization</h2>
+        <textarea id="userText" name="text" class="w-full p-2 border rounded resize-none focus:outline-none focus:ring focus:ring-blue-300" rows="10" placeholder="Enter your text here..."></textarea>
+
+        <div class="w-full">
+            <label for="num-sentences" class="block text-sm font-medium text-gray-700">Enter the total summary sentences</label>
+            <input type="number" id="num-sentences" name="num-sentences" class="w-full rounded-lg border border-gray-300 bg-white w-full px-4 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 outline-none transition">
+        </div>
+
+        <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Get Summarization</button>
+        <p id="result" class="mt-4 font-semibold"></p>
+    </form>
+
+    <script src="assets/script.js"></script>
+</body>
+</html>
