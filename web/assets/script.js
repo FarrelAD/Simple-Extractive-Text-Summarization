@@ -2,54 +2,101 @@ const textForm = document.getElementById('text-form');
 const result = document.getElementById('result');
 
 
-const stopwords = new Set(["a", "an", "the", "is", "to", "of", "and", "in", "that", "it", "as", "for", "with", "on", "this", "at", "by", "from", "be", "are"]);
-
 function tokenize(text) {
-    return text.toLowerCase().match(/\b[a-zA-Z]+\b/g) || [];
+    return text.toLowerCase().split(/\W+/).filter(Boolean);
 }
 
-function preprocessText(text) {
-    const sentences = text.match(/[^.!?]+[.!?]/g) || [text];
-    let wordFrequencies = {};
-
-    sentences.forEach(sentence => {
-        let words = tokenize(sentence).filter(word => !stopwords.has(word));
-
-        words.forEach(word => {
-            wordFrequencies[word] = (wordFrequencies[word] || 0) + 1;
-        });
+function computeTF(words) {
+    let tf = {};
+    words.forEach(word => {
+        tf[word] = (tf[word] || 0) + 1;
     });
 
-    return { sentences, wordFrequencies };
+    const wordCount = words.length;
+    for (const word in tf) {
+        tf[word] /= wordCount;
+    }
+
+    return tf;
 }
 
-function scoreSentences(sentences, wordFrequencies) {
-    let sentenceScores = {};
+
+function computeIDF(sentences) {
+    let idf = {};
+    let totalDocs = sentences.length;
 
     sentences.forEach(sentence => {
-        let words = tokenize(sentence);
-        let score = 0;
-
+        const words = new Set(tokenize(sentence));
         words.forEach(word => {
-            if (wordFrequencies[word]) {
-                score += wordFrequencies[word];
-            }
+            idf[word] = (idf[word] || 0) + 1;
         });
+    })
 
-        sentenceScores[sentence] = score;
+    for (const word in idf) {
+        idf[word] = Math.log(totalDocs / idf[word]);
+    }
+
+    return idf;
+}
+
+
+function computeTFIDF(sentences) {
+    const tfIdfVectors = [];
+    const idf = computeIDF(sentences);
+
+    sentences.forEach(sentence => {
+        const words = tokenize(sentence);
+        const tf = computeTF(words);
+        const tfIdf = {};
+        
+        words.forEach(word => tfIdf[word] = tf[word] * (idf[word] || 0));
+
+        tfIdfVectors.push(tfIdf);
     });
 
-    return sentenceScores;
+    return tfIdfVectors;
 }
+
+
+function cosineSimilarity(vecA, vecB) {
+    let dotProduct = 0, magA = 0, magB = 0;
+
+    let allWords = new Set([...Object.keys(vecA), ...Object.keys(vecB)]);
+
+    allWords.forEach(word => {
+        let a = vecA[word] || 0;
+        let b = vecB[word] || 0;
+
+        dotProduct += a * b;
+        magA += a * a;
+        magB += b * b;
+    });
+
+    if (magA === 0 || magB === 0) return 0;
+    return dotProduct / (Math.sqrt(magA) * Math.sqrt(magB));
+}
+
 
 function getSummary(text, numSentences) {
-    const { sentences, wordFrequencies } = preprocessText(text);
-    const sentenceScores = scoreSentences(sentences, wordFrequencies);
+    const sentences = text.match(/[^.!?]+[.!?]/g) || [text];
+    const tfIdfVectors = computeTFIDF(sentences);
 
-    return Object.entries(sentenceScores)
-        .sort((a, b) => b[1] - a[1])
+    const documentVector = {};
+    tfIdfVectors.forEach(vec => {
+        for (const word in vec) {
+            documentVector[word] = (documentVector[word] || 0) + vec[word];
+        }
+    });
+
+    const sentencesScores = sentences.map((sentence, index) => ({
+        sentence,
+        score: cosineSimilarity(tfIdfVectors[index], documentVector)
+    }));
+
+    return sentencesScores
+        .sort((a, b) => b.score - a.score)
         .slice(0, numSentences)
-        .map(entry => entry[0])
+        .map(entry => entry.sentence)
         .join(" ");
 }
 
