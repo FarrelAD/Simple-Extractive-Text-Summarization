@@ -27,4 +27,8 @@ You can easily access the Jupyter notebook by opening the [`notebook.ipynb`](not
 
 If you want to see how the model is deployed in a real application, check out the [**web**](web/) directory, which contains the source code for the web app. The web app is built entirely in native JavaScript, meaning it can run directly in the browser without requiring server-side configuration. All computations are handled on the client's device.
 
+Additionally, you can try the live implementation of the text summarization directly by visiting the deployed web app on GitHub Pages. You can input any text and get a summary in real-time, all within your web browser. 
+
+👉🏻 [**Try the live demo here!**](https://farrelad.github.io/Simple-Extractive-Text-Summarization/)
+
 ---
